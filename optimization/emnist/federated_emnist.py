@@ -40,13 +40,14 @@ def run_federated(
     experiment_name: Optional[str] = 'federated_emnist_cr',
     root_output_dir: Optional[str] = '/tmp/fed_opt',
     max_eval_batches: Optional[int] = None,
+    as_iid = False,
     **kwargs):
   """Runs an iterative process on the EMNIST character recognition task.
 
   This method will load and pre-process dataset and construct a model used for
   the task. It then uses `iterative_process_builder` to create an iterative
   process that it applies to the task, using
-  `federated_research.utils.training_loop`.
+  `google_tff_research.utils.training_loop`.
 
   We assume that the iterative process has the following functional type
   signatures:
@@ -86,13 +87,14 @@ def run_federated(
       integer, the full evaluation datasets are used.
     **kwargs: Additional arguments configuring the training loop. For details
       on supported arguments, see
-      `federated_research/utils/training_utils.py`.
+      `google_tff_research/utils/training_utils.py`.
   """
 
   emnist_train, _ = emnist_dataset.get_emnist_datasets(
       client_batch_size,
       client_epochs_per_round,
       max_batches_per_client=max_batches_per_client,
+      as_iid=as_iid,
       only_digits=False)
 
   _, emnist_test = emnist_dataset.get_centralized_datasets(

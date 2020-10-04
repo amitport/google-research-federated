@@ -18,6 +18,8 @@ from typing import Optional
 import tensorflow as tf
 import tensorflow_federated as tff
 
+from federated_learning_research.emnist_train_iid import emnist_train_as_iid
+
 EMNIST_TRAIN_DIGITS_ONLY_SIZE = 341873
 EMNIST_TRAIN_FULL_SIZE = 671585
 TEST_BATCH_SIZE = 500
@@ -31,7 +33,8 @@ def reshape_emnist_element(element):
 def get_emnist_datasets(client_batch_size: int,
                         client_epochs_per_round: int,
                         max_batches_per_client: Optional[int] = -1,
-                        only_digits: Optional[bool] = False):
+                        only_digits: Optional[bool] = False,
+                        as_iid = False):
   """Loads and preprocesses EMNIST training and testing sets.
 
   Args:
@@ -64,6 +67,8 @@ def get_emnist_datasets(client_batch_size: int,
 
   emnist_train, emnist_test = tff.simulation.datasets.emnist.load_data(
       only_digits=only_digits)
+  if as_iid:
+    emnist_train = emnist_train_as_iid(emnist_train, only_digits=only_digits)
 
   def preprocess_train_dataset(dataset):
     """Preprocessing function for the EMNIST training dataset."""
