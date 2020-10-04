@@ -43,9 +43,9 @@ from absl import flags
 import numpy as np
 import tensorflow as tf
 
-from gans.experiments.emnist import emnist_data_utils
-from gans.experiments.emnist.classifier import emnist_classifier_model as ecm
-from utils import utils_impl
+from google_tff_research.gans.experiments.emnist import emnist_data_utils
+from google_tff_research.gans.experiments.emnist.classifier import emnist_classifier_model as ecm
+from google_tff_research.utils import utils_impl
 
 with utils_impl.record_new_flags() as hparam_flags:
   flags.DEFINE_float(

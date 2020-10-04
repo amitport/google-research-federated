@@ -28,7 +28,7 @@ import attr
 import tensorflow as tf
 import tensorflow_federated as tff
 
-from adaptive_lr_decay import callbacks
+from google_tff_research.adaptive_lr_decay import callbacks
 
 # Convenience type aliases.
 ModelBuilder = Callable[[], tff.learning.Model]

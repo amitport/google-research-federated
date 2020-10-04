@@ -46,8 +46,8 @@ from absl import flags
 import numpy as np
 import tensorflow as tf
 
-from gans.experiments.emnist import emnist_data_utils
-from gans.experiments.emnist.classifier import emnist_classifier_model as ecm
+from google_tff_research.gans.experiments.emnist import emnist_data_utils
+from google_tff_research.gans.experiments.emnist.classifier import emnist_classifier_model as ecm
 
 flags.DEFINE_float(
     'invert_imagery_likelihood', 0.0,

@@ -20,7 +20,7 @@ import numpy as np
 import tensorflow as tf
 import tensorflow_federated as tff
 
-from optimization.shared import schedule_utils
+from google_tff_research.optimization.shared import schedule_utils
 
 
 def model_builder():

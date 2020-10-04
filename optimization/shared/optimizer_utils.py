@@ -22,9 +22,9 @@ from absl import logging
 import tensorflow as tf
 import tensorflow_addons.optimizers as tfao
 
-from optimization.shared.keras_optimizers import lars
-from optimization.shared.keras_optimizers import shampoo
-from optimization.shared.keras_optimizers import yogi
+from google_tff_research.optimization.shared.keras_optimizers import lars
+from google_tff_research.optimization.shared.keras_optimizers import shampoo
+from google_tff_research.optimization.shared.keras_optimizers import yogi
 
 
 def _optimizer_canonical_name(optimizer_cls):

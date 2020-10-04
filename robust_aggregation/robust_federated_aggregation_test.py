@@ -18,7 +18,7 @@ import numpy as np
 import tensorflow as tf
 import tensorflow_federated as tff
 
-from robust_aggregation import robust_federated_aggregation as rfa
+from google_tff_research.robust_aggregation import robust_federated_aggregation as rfa
 from tensorflow_federated.python.tensorflow_libs import tensor_utils
 
 DIM = 500

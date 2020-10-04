@@ -17,9 +17,9 @@ import string
 import tensorflow as tf
 import tensorflow_federated as tff
 
-from analytics.heavy_hitters import heavy_hitters_testcase as hh_test
-from triehh import triehh_tf
-from triehh import triehh_tff
+from google_tff_research.analytics.heavy_hitters import heavy_hitters_testcase as hh_test
+from google_tff_research.triehh import triehh_tf
+from google_tff_research.triehh import triehh_tff
 
 
 class TriehhTffTest(hh_test.HeavyHittersTest):

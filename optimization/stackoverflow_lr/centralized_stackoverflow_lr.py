@@ -17,9 +17,9 @@ from typing import Any, Mapping, Optional
 
 import tensorflow as tf
 
-from utils import centralized_training_loop
-from utils.datasets import stackoverflow_lr_dataset
-from utils.models import stackoverflow_lr_models
+from google_tff_research.utils import centralized_training_loop
+from google_tff_research.utils.datasets import stackoverflow_lr_dataset
+from google_tff_research.utils.models import stackoverflow_lr_models
 
 
 def run_centralized(optimizer: tf.keras.optimizers.Optimizer,

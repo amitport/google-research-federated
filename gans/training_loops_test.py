@@ -18,11 +18,11 @@ from absl.testing import parameterized
 import tensorflow as tf
 import tensorflow_privacy
 
-from gans import gan_losses
-from gans import gan_training_tf_fns
-from gans import one_dim_gan
-from gans import tff_gans
-from gans import training_loops
+from google_tff_research.gans import gan_losses
+from google_tff_research.gans import gan_training_tf_fns
+from google_tff_research.gans import one_dim_gan
+from google_tff_research.gans import tff_gans
+from google_tff_research.gans import training_loops
 
 
 def _get_train_generator_and_discriminator_fns():

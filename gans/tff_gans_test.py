@@ -17,10 +17,10 @@ import tensorflow as tf
 import tensorflow_federated as tff
 import tensorflow_privacy
 
-from gans import gan_losses
-from gans import gan_training_tf_fns
-from gans import one_dim_gan
-from gans import tff_gans
+from google_tff_research.gans import gan_losses
+from google_tff_research.gans import gan_training_tf_fns
+from google_tff_research.gans import one_dim_gan
+from google_tff_research.gans import tff_gans
 
 # These 'before' and 'after' values bear no significance, they meerly correspond
 # to the clip and std dev values before and after two rounds of training when

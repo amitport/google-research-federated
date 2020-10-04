@@ -19,8 +19,8 @@ from absl import logging
 import tensorflow as tf
 import tensorflow_federated as tff
 
-from adaptive_lr_decay import adaptive_fed_avg
-from adaptive_lr_decay import callbacks
+from google_tff_research.adaptive_lr_decay import adaptive_fed_avg
+from google_tff_research.adaptive_lr_decay import callbacks
 
 
 def _create_client_data(num_batches=2):

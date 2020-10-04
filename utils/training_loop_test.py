@@ -20,9 +20,9 @@ import numpy as np
 import tensorflow as tf
 import tensorflow_federated as tff
 
-from utils import checkpoint_manager
-from utils import metrics_manager
-from utils import training_loop
+from google_tff_research.utils import checkpoint_manager
+from google_tff_research.utils import metrics_manager
+from google_tff_research.utils import training_loop
 
 _Batch = collections.namedtuple('Batch', ['x', 'y'])
 

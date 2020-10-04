@@ -18,7 +18,7 @@ from absl.testing import parameterized
 import numpy as np
 import tensorflow as tf
 
-from optimization.shared.keras_optimizers import lars
+from google_tff_research.optimization.shared.keras_optimizers import lars
 
 
 def lars_update_numpy(current_x,

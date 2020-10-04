@@ -15,7 +15,7 @@
 
 import tensorflow as tf
 
-from utils.models import resnet_models
+from google_tff_research.utils.models import resnet_models
 
 
 class ResnetModelTest(tf.test.TestCase):

@@ -14,7 +14,7 @@
 
 import tensorflow as tf
 
-from utils.models import emnist_models
+from google_tff_research.utils.models import emnist_models
 
 
 class ModelCollectionTest(tf.test.TestCase):

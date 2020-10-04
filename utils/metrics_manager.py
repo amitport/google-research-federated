@@ -21,7 +21,7 @@ import pandas as pd
 import tensorflow as tf
 import tree
 
-from utils import utils_impl
+from google_tff_research.utils import utils_impl
 
 
 class ScalarMetricsManager():

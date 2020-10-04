@@ -24,9 +24,9 @@ from absl import flags
 import tensorflow as tf
 import tensorflow_federated as tff
 
-from optimization.shared import fed_avg_schedule
-from optimization.shared import optimizer_utils
-from utils import utils_impl
+from google_tff_research.optimization.shared import fed_avg_schedule
+from google_tff_research.optimization.shared import optimizer_utils
+from google_tff_research.utils import utils_impl
 
 # Defining optimizer flags
 with utils_impl.record_hparam_flags():

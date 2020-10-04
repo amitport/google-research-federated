@@ -16,7 +16,7 @@
 from absl import app
 from absl import flags
 
-from utils import utils_impl
+from google_tff_research.utils import utils_impl
 
 FLAGS = flags.FLAGS
 

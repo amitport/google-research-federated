@@ -14,8 +14,8 @@
 
 import tensorflow as tf
 
-from optimization.shared import keras_metrics
-from utils.models import shakespeare_models
+from google_tff_research.optimization.shared import keras_metrics
+from google_tff_research.utils.models import shakespeare_models
 
 
 class ModelsTest(tf.test.TestCase):

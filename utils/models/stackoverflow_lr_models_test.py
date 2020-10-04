@@ -14,7 +14,7 @@
 
 import tensorflow as tf
 
-from utils.models import stackoverflow_lr_models
+from google_tff_research.utils.models import stackoverflow_lr_models
 
 
 class ModelCollectionTest(tf.test.TestCase):

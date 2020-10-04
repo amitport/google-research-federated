@@ -22,7 +22,7 @@ away when b/130724878 is fixed.
 import attr
 import tensorflow as tf
 
-from gans import gan_losses
+from google_tff_research.gans import gan_losses
 from tensorflow_federated.python.tensorflow_libs import tensor_utils
 
 

@@ -20,8 +20,8 @@ from absl import logging
 import pandas as pd
 import tensorflow as tf
 
-from optimization.shared import keras_callbacks
-from utils import utils_impl
+from google_tff_research.optimization.shared import keras_callbacks
+from google_tff_research.utils import utils_impl
 
 
 def run(

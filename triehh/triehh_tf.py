@@ -28,7 +28,7 @@ import attr
 import tensorflow as tf
 import tensorflow_federated as tff
 
-from analytics.heavy_hitters import heavy_hitters_utils as hh_utils
+from google_tff_research.analytics.heavy_hitters import heavy_hitters_utils as hh_utils
 
 DEFAULT_VALUE = -1  # The value to use if a key is missing in the hash table.
 DEFAULT_TERMINATOR = '$'  # The end of sequence symbol.

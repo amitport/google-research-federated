@@ -23,7 +23,7 @@ from absl.testing import parameterized
 import pandas as pd
 import tensorflow as tf
 
-from utils import utils_impl
+from google_tff_research.utils import utils_impl
 
 FLAGS = flags.FLAGS
 TEST_CLIENT_FLAG_PREFIX = 'test_client'

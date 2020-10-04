@@ -20,8 +20,8 @@ import tensorflow as tf
 import tensorflow_federated as tff
 import tensorflow_privacy
 
-from targeted_attack import attacked_fedavg
-from targeted_attack.attacked_fedavg import build_federated_averaging_process_attacked
+from google_tff_research.targeted_attack import attacked_fedavg
+from google_tff_research.targeted_attack.attacked_fedavg import build_federated_averaging_process_attacked
 from tensorflow_federated.python.common_libs import test_utils
 
 _Batch = collections.namedtuple('Batch', ['x', 'y'])

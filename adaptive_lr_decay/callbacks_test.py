@@ -17,7 +17,7 @@ from absl import logging
 import numpy as np
 import tensorflow as tf
 
-from adaptive_lr_decay import callbacks
+from google_tff_research.adaptive_lr_decay import callbacks
 
 
 class ReduceLROnPlateauTest(tf.test.TestCase):

@@ -15,7 +15,7 @@
 import numpy as np
 import tensorflow as tf
 
-from compression import sparsity
+from google_tff_research.compression import sparsity
 from tensorflow_model_optimization.python.core.internal import tensor_encoding as te
 
 

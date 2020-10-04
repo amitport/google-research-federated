@@ -16,7 +16,7 @@ import collections
 import tensorflow as tf
 import tensorflow_federated as tff
 
-from utils import aggregate_fns
+from google_tff_research.utils import aggregate_fns
 
 
 def create_weights_delta(input_size=2, hidden_size=5, constant=0):

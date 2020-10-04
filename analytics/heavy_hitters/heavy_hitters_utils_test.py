@@ -15,7 +15,7 @@
 import collections
 import tensorflow as tf
 
-from analytics.heavy_hitters import heavy_hitters_utils as hh_utils
+from google_tff_research.analytics.heavy_hitters import heavy_hitters_utils as hh_utils
 
 
 class HeavyHittersUtilsTest(tf.test.TestCase):

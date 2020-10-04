@@ -29,10 +29,10 @@ from typing import List
 import tensorflow as tf
 import tensorflow_federated as tff
 
-from triehh import triehh_tf
-from triehh.triehh_tf import client_update
-from triehh.triehh_tf import server_update
-from triehh.triehh_tf import ServerState
+from google_tff_research.triehh import triehh_tf
+from google_tff_research.triehh.triehh_tf import client_update
+from google_tff_research.triehh.triehh_tf import server_update
+from google_tff_research.triehh.triehh_tf import ServerState
 
 
 def build_triehh_process(

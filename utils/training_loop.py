@@ -24,9 +24,9 @@ import pandas as pd
 import tensorflow as tf
 import tensorflow_federated as tff
 
-from utils import checkpoint_manager
-from utils import metrics_manager
-from utils import utils_impl
+from google_tff_research.utils import checkpoint_manager
+from google_tff_research.utils import metrics_manager
+from google_tff_research.utils import utils_impl
 
 
 def create_if_not_exists(path):

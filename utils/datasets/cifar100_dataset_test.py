@@ -16,7 +16,7 @@ import collections
 
 import tensorflow as tf
 
-from utils.datasets import cifar100_dataset
+from google_tff_research.utils.datasets import cifar100_dataset
 
 TEST_BATCH_SIZE = cifar100_dataset.TEST_BATCH_SIZE
 

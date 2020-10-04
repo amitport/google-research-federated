@@ -21,10 +21,10 @@ from absl import logging
 import tensorflow as tf
 import tensorflow_federated as tff
 
-from utils import training_loop
-from utils import training_utils
-from utils.datasets import stackoverflow_lr_dataset
-from utils.models import stackoverflow_lr_models
+from google_tff_research.utils import training_loop
+from google_tff_research.utils import training_utils
+from google_tff_research.utils.datasets import stackoverflow_lr_dataset
+from google_tff_research.utils.models import stackoverflow_lr_models
 
 
 def metrics_builder():

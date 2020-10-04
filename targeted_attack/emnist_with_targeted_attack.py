@@ -24,7 +24,7 @@ import tensorflow as tf
 import tensorflow_federated as tff
 import tensorflow_privacy
 
-from targeted_attack import attacked_fedavg
+from google_tff_research.targeted_attack import attacked_fedavg
 
 FLAGS = flags.FLAGS
 

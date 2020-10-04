@@ -17,7 +17,7 @@ import numpy as np
 import tensorflow as tf
 import tensorflow_federated as tff
 
-from gans.experiments.emnist import emnist_data_utils
+from google_tff_research.gans.experiments.emnist import emnist_data_utils
 
 BATCH_SIZE = 7
 

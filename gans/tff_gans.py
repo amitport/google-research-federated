@@ -18,7 +18,7 @@ import tensorflow as tf
 import tensorflow_federated as tff
 import tensorflow_privacy
 
-from gans import gan_training_tf_fns
+from google_tff_research.gans import gan_training_tf_fns
 
 
 def tensor_spec_for_batch(dummy_batch):

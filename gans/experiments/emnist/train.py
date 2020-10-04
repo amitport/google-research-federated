@@ -29,16 +29,16 @@ import tensorflow_gan as tfgan
 import tensorflow_privacy
 import tree
 
-from gans import gan_losses
-from gans import gan_training_tf_fns
-from gans import tff_gans
-from gans import training_loops
-from gans.experiments.emnist import emnist_data_utils
-from gans.experiments.emnist.classifier import emnist_classifier_model as ecm
-from gans.experiments.emnist.eval import emnist_eval_util as eeu
-from gans.experiments.emnist.models import convolutional_gan_networks as networks
-from gans.experiments.emnist.preprocessing import filtered_emnist_data_utils as fedu
-from utils import utils_impl
+from google_tff_research.gans import gan_losses
+from google_tff_research.gans import gan_training_tf_fns
+from google_tff_research.gans import tff_gans
+from google_tff_research.gans import training_loops
+from google_tff_research.gans.experiments.emnist import emnist_data_utils
+from google_tff_research.gans.experiments.emnist.classifier import emnist_classifier_model as ecm
+from google_tff_research.gans.experiments.emnist.eval import emnist_eval_util as eeu
+from google_tff_research.gans.experiments.emnist.models import convolutional_gan_networks as networks
+from google_tff_research.gans.experiments.emnist.preprocessing import filtered_emnist_data_utils as fedu
+from google_tff_research.utils import utils_impl
 from tensorboard.plugins.hparams import api as hp
 
 with utils_impl.record_new_flags() as hparam_flags:

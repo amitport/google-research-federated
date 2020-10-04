@@ -24,14 +24,14 @@ import collections
 from absl import app
 from absl import flags
 
-from optimization.cifar100 import centralized_cifar100
-from optimization.emnist import centralized_emnist
-from optimization.emnist_ae import centralized_emnist_ae
-from optimization.shakespeare import centralized_shakespeare
-from optimization.shared import optimizer_utils
-from optimization.stackoverflow import centralized_stackoverflow
-from optimization.stackoverflow_lr import centralized_stackoverflow_lr
-from utils import utils_impl
+from google_tff_research.optimization.cifar100 import centralized_cifar100
+from google_tff_research.optimization.emnist import centralized_emnist
+from google_tff_research.optimization.emnist_ae import centralized_emnist_ae
+from google_tff_research.optimization.shakespeare import centralized_shakespeare
+from google_tff_research.optimization.shared import optimizer_utils
+from google_tff_research.optimization.stackoverflow import centralized_stackoverflow
+from google_tff_research.optimization.stackoverflow_lr import centralized_stackoverflow_lr
+from google_tff_research.utils import utils_impl
 
 _SUPPORTED_TASKS = [
     'cifar100', 'emnist_cr', 'emnist_ae', 'shakespeare', 'stackoverflow_nwp',

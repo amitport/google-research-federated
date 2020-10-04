@@ -25,7 +25,7 @@ from absl import flags
 import numpy as np
 import tensorflow as tf
 
-from semi_cyclic_sgd import sentiment_util as su
+from google_tff_research.semi_cyclic_sgd import sentiment_util as su
 
 FLAGS = flags.FLAGS
 RAWDATA = '/tmp/sc_paper/raw_data/'

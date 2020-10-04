@@ -20,7 +20,7 @@ import numpy as np
 import tensorflow as tf
 import tensorflow_federated as tff
 
-from utils import training_utils
+from google_tff_research.utils import training_utils
 
 
 def model_builder():

@@ -18,7 +18,7 @@ import numpy as np
 import tensorflow as tf
 import tensorflow_federated as tff
 
-from utils.datasets import stackoverflow_dataset
+from google_tff_research.utils.datasets import stackoverflow_dataset
 from tensorflow_federated.python.common_libs import test_utils
 
 

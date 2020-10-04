@@ -20,7 +20,7 @@ import os.path
 import tensorflow as tf
 import tensorflow_federated as tff
 
-from gans.experiments.emnist import emnist_data_utils
+from google_tff_research.gans.experiments.emnist import emnist_data_utils
 
 BASE_URL = 'https://storage.googleapis.com/tff-experiments-public/'
 CSVS_BASE_PATH = 'gans/csvs/'

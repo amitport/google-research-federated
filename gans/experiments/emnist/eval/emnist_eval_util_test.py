@@ -16,10 +16,10 @@
 import numpy as np
 import tensorflow as tf
 
-from gans.experiments.emnist import emnist_data_utils
-from gans.experiments.emnist.classifier import emnist_classifier_model as ecm
+from google_tff_research.gans.experiments.emnist import emnist_data_utils
+from google_tff_research.gans.experiments.emnist.classifier import emnist_classifier_model as ecm
 
-from gans.experiments.emnist.eval import emnist_eval_util as eeu
+from google_tff_research.gans.experiments.emnist.eval import emnist_eval_util as eeu
 
 
 class EmnistEvalUtilTest(tf.test.TestCase):

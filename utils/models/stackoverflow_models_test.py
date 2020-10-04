@@ -16,7 +16,7 @@ from absl.testing import absltest
 import numpy as np
 import tensorflow as tf
 
-from utils.models import stackoverflow_models
+from google_tff_research.utils.models import stackoverflow_models
 
 
 class KerasSequenceModelsTest(absltest.TestCase):

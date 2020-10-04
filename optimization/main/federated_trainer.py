@@ -28,15 +28,15 @@ from absl import flags
 import tensorflow as tf
 import tensorflow_federated as tff
 
-from optimization.cifar100 import federated_cifar100
-from optimization.emnist import federated_emnist
-from optimization.emnist_ae import federated_emnist_ae
-from optimization.shakespeare import federated_shakespeare
-from optimization.shared import fed_avg_schedule
-from optimization.shared import optimizer_utils
-from optimization.stackoverflow import federated_stackoverflow
-from optimization.stackoverflow_lr import federated_stackoverflow_lr
-from utils import utils_impl
+from google_tff_research.optimization.cifar100 import federated_cifar100
+from google_tff_research.optimization.emnist import federated_emnist
+from google_tff_research.optimization.emnist_ae import federated_emnist_ae
+from google_tff_research.optimization.shakespeare import federated_shakespeare
+from google_tff_research.optimization.shared import fed_avg_schedule
+from google_tff_research.optimization.shared import optimizer_utils
+from google_tff_research.optimization.stackoverflow import federated_stackoverflow
+from google_tff_research.optimization.stackoverflow_lr import federated_stackoverflow_lr
+from google_tff_research.utils import utils_impl
 
 _SUPPORTED_TASKS = [
     'cifar100', 'emnist_cr', 'emnist_ae', 'shakespeare', 'stackoverflow_nwp',

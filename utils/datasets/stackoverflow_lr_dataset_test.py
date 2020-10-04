@@ -15,7 +15,7 @@
 
 import tensorflow as tf
 
-from utils.datasets import stackoverflow_lr_dataset
+from google_tff_research.utils.datasets import stackoverflow_lr_dataset
 from tensorflow_federated.python.common_libs import test_utils
 
 

@@ -29,11 +29,11 @@ import tensorflow as tf
 import tensorflow_federated as tff
 import tree
 
-from flars import flars_fedavg
-from flars import flars_optimizer
-from utils import checkpoint_manager
-from utils import utils_impl
-from utils.models import emnist_models
+from google_tff_research.flars import flars_fedavg
+from google_tff_research.flars import flars_optimizer
+from google_tff_research.utils import checkpoint_manager
+from google_tff_research.utils import utils_impl
+from google_tff_research.utils.models import emnist_models
 from tensorboard.plugins.hparams import api as hp
 
 with utils_impl.record_new_flags() as hparam_flags:

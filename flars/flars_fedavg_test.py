@@ -18,8 +18,8 @@ import collections
 import tensorflow as tf
 import tensorflow_federated as tff
 
-from flars import flars_fedavg
-from flars import flars_optimizer
+from google_tff_research.flars import flars_fedavg
+from google_tff_research.flars import flars_optimizer
 
 
 def _create_input_spec():

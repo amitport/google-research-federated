@@ -31,12 +31,12 @@ from absl import flags
 import tensorflow as tf
 import tensorflow_federated as tff
 
-from compression import sparsity
-from utils import training_loop
-from utils import training_utils
-from utils import utils_impl
-from utils.datasets import emnist_dataset
-from utils.models import emnist_models
+from google_tff_research.compression import sparsity
+from google_tff_research.utils import training_loop
+from google_tff_research.utils import training_utils
+from google_tff_research.utils import utils_impl
+from google_tff_research.utils.datasets import emnist_dataset
+from google_tff_research.utils.models import emnist_models
 from tensorflow_model_optimization.python.core.internal import tensor_encoding as te
 
 

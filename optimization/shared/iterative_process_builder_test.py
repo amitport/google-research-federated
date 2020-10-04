@@ -23,7 +23,7 @@ import numpy as np
 import tensorflow as tf
 import tensorflow_federated as tff
 
-from optimization.shared import iterative_process_builder
+from google_tff_research.optimization.shared import iterative_process_builder
 
 FLAGS = flags.FLAGS
 

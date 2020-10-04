@@ -25,7 +25,7 @@ import attr
 import tensorflow as tf
 import tensorflow_federated as tff
 
-from flars import flars_optimizer
+from google_tff_research.flars import flars_optimizer
 from tensorflow_federated.python.tensorflow_libs import tensor_utils
 
 

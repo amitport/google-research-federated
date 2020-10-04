@@ -19,14 +19,14 @@ import os.path
 from absl.testing import parameterized
 import tensorflow as tf
 
-from optimization.cifar100 import federated_cifar100
-from optimization.emnist import federated_emnist
-from optimization.emnist_ae import federated_emnist_ae
-from optimization.shakespeare import federated_shakespeare
-from optimization.shared import fed_avg_schedule
-from optimization.stackoverflow import federated_stackoverflow
-from optimization.stackoverflow_lr import federated_stackoverflow_lr
-from utils import metrics_manager
+from google_tff_research.optimization.cifar100 import federated_cifar100
+from google_tff_research.optimization.emnist import federated_emnist
+from google_tff_research.optimization.emnist_ae import federated_emnist_ae
+from google_tff_research.optimization.shakespeare import federated_shakespeare
+from google_tff_research.optimization.shared import fed_avg_schedule
+from google_tff_research.optimization.stackoverflow import federated_stackoverflow
+from google_tff_research.optimization.stackoverflow_lr import federated_stackoverflow_lr
+from google_tff_research.utils import metrics_manager
 
 
 def iterative_process_builder(model_fn, client_weight_fn=None):

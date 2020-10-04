@@ -17,9 +17,9 @@ from typing import Any, Mapping, Optional
 
 import tensorflow as tf
 
-from utils import centralized_training_loop
-from utils.datasets import cifar100_dataset
-from utils.models import resnet_models
+from google_tff_research.utils import centralized_training_loop
+from google_tff_research.utils.datasets import cifar100_dataset
+from google_tff_research.utils.models import resnet_models
 
 
 CIFAR_SHAPE = (32, 32, 3)

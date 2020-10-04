@@ -20,9 +20,9 @@ from absl import logging
 import attr
 import tensorflow as tf
 
-from gans import gan_training_tf_fns
-from gans import tff_gans
-from utils import checkpoint_utils
+from google_tff_research.gans import gan_training_tf_fns
+from google_tff_research.gans import tff_gans
+from google_tff_research.utils import checkpoint_utils
 
 CHECKPOINT_PREFIX = 'ckpt_'
 

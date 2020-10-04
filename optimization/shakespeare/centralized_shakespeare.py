@@ -17,10 +17,10 @@ from typing import Any, Mapping, Optional
 
 import tensorflow as tf
 
-from optimization.shared import keras_metrics
-from utils import centralized_training_loop
-from utils.datasets import shakespeare_dataset
-from utils.models import shakespeare_models
+from google_tff_research.optimization.shared import keras_metrics
+from google_tff_research.utils import centralized_training_loop
+from google_tff_research.utils.datasets import shakespeare_dataset
+from google_tff_research.utils.models import shakespeare_models
 
 # Vocabulary with OOV ID, zero for the padding, and BOS, EOS IDs.
 VOCAB_SIZE = len(shakespeare_dataset.CHAR_VOCAB) + 4

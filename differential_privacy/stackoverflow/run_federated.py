@@ -22,13 +22,13 @@ from absl import logging
 import tensorflow as tf
 import tensorflow_federated as tff
 
-from optimization.shared import keras_metrics
-from optimization.shared import optimizer_utils
-from utils import training_loop
-from utils import training_utils
-from utils import utils_impl
-from utils.datasets import stackoverflow_dataset
-from utils.models import stackoverflow_models
+from google_tff_research.optimization.shared import keras_metrics
+from google_tff_research.optimization.shared import optimizer_utils
+from google_tff_research.utils import training_loop
+from google_tff_research.utils import training_utils
+from google_tff_research.utils import utils_impl
+from google_tff_research.utils.datasets import stackoverflow_dataset
+from google_tff_research.utils.models import stackoverflow_models
 
 with utils_impl.record_new_flags():
   # Training hyperparameters

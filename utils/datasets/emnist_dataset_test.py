@@ -14,7 +14,7 @@
 
 import tensorflow as tf
 
-from utils.datasets import emnist_dataset
+from google_tff_research.utils.datasets import emnist_dataset
 
 TEST_BATCH_SIZE = emnist_dataset.TEST_BATCH_SIZE
 

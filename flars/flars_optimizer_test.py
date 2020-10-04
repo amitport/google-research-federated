@@ -18,7 +18,7 @@ from absl.testing import parameterized
 import numpy as np
 import tensorflow as tf
 
-from flars import flars_optimizer
+from google_tff_research.flars import flars_optimizer
 
 
 class FLARSOptimizerTest(parameterized.TestCase, tf.test.TestCase):

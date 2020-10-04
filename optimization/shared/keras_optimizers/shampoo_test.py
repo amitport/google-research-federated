@@ -16,7 +16,7 @@
 import numpy as np
 import tensorflow as tf
 
-from optimization.shared.keras_optimizers import shampoo
+from google_tff_research.optimization.shared.keras_optimizers import shampoo
 
 
 class ShampooTest(tf.test.TestCase):

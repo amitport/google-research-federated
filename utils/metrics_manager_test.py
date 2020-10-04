@@ -19,8 +19,8 @@ import numpy as np
 import pandas as pd
 import tensorflow as tf
 
-from utils import metrics_manager
-from utils import utils_impl
+from google_tff_research.utils import metrics_manager
+from google_tff_research.utils import utils_impl
 
 
 def _create_dummy_metrics():
