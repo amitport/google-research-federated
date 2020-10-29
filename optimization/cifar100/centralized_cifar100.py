@@ -17,10 +17,10 @@ from typing import Any, Mapping, Optional
 
 import tensorflow as tf
 
+from federated_learning_research.pseudo_round import Compression
 from utils import centralized_training_loop
 from utils.datasets import cifar100_dataset
 from utils.models import resnet_models
-
 
 CIFAR_SHAPE = (32, 32, 3)
 NUM_CHANNELS = 3
@@ -32,8 +32,11 @@ def run_centralized(optimizer: tf.keras.optimizers.Optimizer,
                     root_output_dir: str,
                     num_epochs: int,
                     batch_size: int,
+                    pseudo_round_size: int,
+                    pseudo_round_compression: Compression,
                     decay_epochs: Optional[int] = None,
                     lr_decay: Optional[float] = None,
+                    decay_type: str = 'linear',
                     hparams_dict: Optional[Mapping[str, Any]] = None,
                     crop_size: Optional[int] = 24,
                     max_batches: Optional[int] = None):
@@ -48,10 +51,13 @@ def run_centralized(optimizer: tf.keras.optimizers.Optimizer,
       hyperparameter choices (if `hparams_dict` is used).
     num_epochs: The number of training epochs.
     batch_size: The batch size, used for train, validation, and test.
+    pseudo_round_size: TODO.
+    pseudo_round_compression: TODO.
     decay_epochs: The number of epochs of training before decaying the learning
       rate. If None, no decay occurs.
     lr_decay: The amount to decay the learning rate by after `decay_epochs`
       training epochs have occurred.
+    decay_type: TODO.
     hparams_dict: A mapping with string keys representing the hyperparameters
       and their values. If not None, this is written to CSV.
     crop_size: The crop size used for CIFAR-100 preprocessing.
@@ -72,7 +78,9 @@ def run_centralized(optimizer: tf.keras.optimizers.Optimizer,
   model.compile(
       loss=tf.keras.losses.SparseCategoricalCrossentropy(),
       optimizer=optimizer,
-      metrics=[tf.keras.metrics.SparseCategoricalAccuracy()])
+      metrics=[tf.keras.metrics.SparseCategoricalAccuracy()],
+      # run_eagerly=True,
+  )
 
   centralized_training_loop.run(
       keras_model=model,
@@ -81,6 +89,9 @@ def run_centralized(optimizer: tf.keras.optimizers.Optimizer,
       experiment_name=experiment_name,
       root_output_dir=root_output_dir,
       num_epochs=num_epochs,
+      pseudo_round_size=pseudo_round_size,
+      pseudo_round_compression=pseudo_round_compression,
       hparams_dict=hparams_dict,
       decay_epochs=decay_epochs,
-      lr_decay=lr_decay)
+      lr_decay=lr_decay,
+      decay_type=decay_type)

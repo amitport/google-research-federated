@@ -20,6 +20,8 @@ from absl import logging
 import pandas as pd
 import tensorflow as tf
 
+from federated_learning_research import pseudo_round
+from federated_learning_research.pseudo_round import Compression, noop_mean
 from optimization.shared import keras_callbacks
 from utils import utils_impl
 
@@ -30,9 +32,12 @@ def run(
     experiment_name: str,
     root_output_dir: str,
     num_epochs: int,
+    pseudo_round_size: int = None,
+    pseudo_round_compression: Compression = noop_mean,
     hparams_dict: Optional[Dict[str, Any]] = None,
     decay_epochs: Optional[int] = None,
     lr_decay: Optional[float] = None,
+    decay_type: str = 'linear',
     validation_dataset: Optional[tf.data.Dataset] = None,
     test_dataset: Optional[tf.data.Dataset] = None
 ) -> tf.keras.callbacks.History:
@@ -47,10 +52,13 @@ def run(
       `root_output_dir/experiment_name` will contain TensorBoard logs, metrics
       CSVs and other outputs.
     num_epochs: How many training epochs to perform.
+    pseudo_round_size: How many batches to merge before applying gradients.
+    pseudo_round_compression: TODO.
     hparams_dict: An optional dict specifying hyperparameters. If provided, the
       hyperparameters will be written to CSV.
     decay_epochs: Number of training epochs before decaying the learning rate.
     lr_decay: How much to decay the learning rate by every `decay_epochs`.
+    decay_type: TODO.
     validation_dataset: An optional `tf.data.Dataset` used for validation during
       training.
     test_dataset: An optional `tf.data.Dataset` used for testing after all
@@ -59,6 +67,11 @@ def run(
   Returns:
     A `tf.keras.callbacks.History` object.
   """
+
+  if pseudo_round_size:
+    train_dataset = train_dataset.batch(pseudo_round_size, drop_remainder=True)
+    pseudo_round.augment_keras_model(keras_model, pseudo_round_compression)
+
   tensorboard_dir = os.path.join(root_output_dir, 'logdir', experiment_name)
   results_dir = os.path.join(root_output_dir, 'results', experiment_name)
 
@@ -78,8 +91,11 @@ def run(
   if decay_epochs is not None and decay_epochs > 0:
     # Reduce the learning rate after a fixed number of epochs.
     def decay_lr(epoch, learning_rate):
-      if (epoch + 1) % decay_epochs == 0:
-        return learning_rate * lr_decay
+      if epoch > 0 and epoch % decay_epochs == 0:
+        if decay_type == 'inverse_sqrt':
+          return learning_rate / tf.sqrt(tf.cast(epoch, tf.float32))
+        else:
+          return learning_rate * lr_decay
       else:
         return learning_rate
 

@@ -24,6 +24,7 @@ import collections
 from absl import app
 from absl import flags
 
+from federated_learning_research.pseudo_round import COMPRESSIONS
 from optimization.cifar100 import centralized_cifar100
 from optimization.emnist import centralized_emnist
 from optimization.emnist_ae import centralized_emnist_ae
@@ -54,12 +55,19 @@ with utils_impl.record_new_flags() as hparam_flags:
       'be appended, and the directory will contain tensorboard logs, metrics '
       'written as CSVs, and a CSV of hyperparameter choices.')
   flags.DEFINE_integer('num_epochs', 50, 'Number of epochs to train.')
+  flags.DEFINE_integer('pseudo_round_size', None, 'How many batches to merge '
+                                                  'before applying gradients.')
+  flags.DEFINE_enum('pseudo_round_compression', 'noop_mean', COMPRESSIONS.keys(),
+                    'The Compression scheme to use on the gradients of each batch.')
   flags.DEFINE_integer('batch_size', 32,
                        'Size of batches for training and eval.')
   flags.DEFINE_integer('decay_epochs', None, 'Number of epochs before decaying '
                        'the learning rate.')
   flags.DEFINE_float('lr_decay', None, 'How much to decay the learning rate by'
                      ' at each stage.')
+  flags.DEFINE_enum('decay_type', 'linear', ['linear', 'inverse_sqrt'], 'type of decay')
+
+
 
   # CIFAR-100 flags
   flags.DEFINE_integer('cifar100_crop_size', 24, 'The height and width of '
@@ -118,9 +126,12 @@ def main(argv):
       ('experiment_name', FLAGS.experiment_name),
       ('root_output_dir', FLAGS.root_output_dir),
       ('num_epochs', FLAGS.num_epochs),
+      ('pseudo_round_size', FLAGS.pseudo_round_size),
+      ('pseudo_round_compression', COMPRESSIONS[FLAGS.pseudo_round_compression]),
       ('batch_size', FLAGS.batch_size),
       ('decay_epochs', FLAGS.decay_epochs),
       ('lr_decay', FLAGS.lr_decay),
+      ('decay_type', FLAGS.decay_type),
       ('hparams_dict', hparams_dict),
   ])
 
