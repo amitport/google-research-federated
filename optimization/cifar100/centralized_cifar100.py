@@ -74,7 +74,7 @@ def run_centralized(optimizer: tf.keras.optimizers.Optimizer,
       crop_shape=crop_shape)
 
   model = resnet_models.create_resnet18(
-      input_shape=crop_shape, num_classes=NUM_CLASSES)
+      input_shape=crop_shape, num_classes=NUM_CLASSES, norm='batch')
   model.compile(
       loss=tf.keras.losses.SparseCategoricalCrossentropy(),
       optimizer=optimizer,
