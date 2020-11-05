@@ -24,7 +24,7 @@ import collections
 from absl import app
 from absl import flags
 
-from federated_learning_research.pseudo_round import COMPRESSIONS
+from federated_learning_research.pseudo_round import AGGREGATIONS
 from optimization.cifar100 import centralized_cifar100
 from optimization.emnist import centralized_emnist
 from optimization.emnist_ae import centralized_emnist_ae
@@ -57,7 +57,7 @@ with utils_impl.record_new_flags() as hparam_flags:
   flags.DEFINE_integer('num_epochs', 50, 'Number of epochs to train.')
   flags.DEFINE_integer('pseudo_round_size', None, 'How many batches to merge '
                                                   'before applying gradients.')
-  flags.DEFINE_enum('pseudo_round_compression', 'noop_mean', COMPRESSIONS.keys(),
+  flags.DEFINE_enum('pseudo_round_aggregation', 'noop_mean', AGGREGATIONS.keys(),
                     'The Compression scheme to use on the gradients of each batch.')
   flags.DEFINE_integer('batch_size', 32,
                        'Size of batches for training and eval.')
@@ -127,7 +127,7 @@ def main(argv):
       ('root_output_dir', FLAGS.root_output_dir),
       ('num_epochs', FLAGS.num_epochs),
       ('pseudo_round_size', FLAGS.pseudo_round_size),
-      ('pseudo_round_compression', COMPRESSIONS[FLAGS.pseudo_round_compression]),
+      ('pseudo_round_aggregation', AGGREGATIONS[FLAGS.pseudo_round_aggregation]),
       ('batch_size', FLAGS.batch_size),
       ('decay_epochs', FLAGS.decay_epochs),
       ('lr_decay', FLAGS.lr_decay),
