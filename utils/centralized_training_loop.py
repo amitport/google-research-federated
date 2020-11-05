@@ -93,7 +93,7 @@ def run(
     def decay_lr(epoch, learning_rate):
       if epoch > 0 and epoch % decay_epochs == 0:
         if decay_type == 'inverse_sqrt':
-          return learning_rate / tf.sqrt(tf.cast(epoch, tf.float32))
+          return learning_rate * tf.math.rsqrt(tf.cast(epoch, tf.float32))
         else:
           return learning_rate * lr_decay
       else:
