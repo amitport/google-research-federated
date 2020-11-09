@@ -24,7 +24,7 @@ import collections
 from absl import app
 from absl import flags
 
-from federated_learning_research.pseudo_round import AGGREGATIONS
+from federated_learning_research.aggregators import AGGREGATIONS
 from optimization.cifar100 import centralized_cifar100
 from optimization.emnist import centralized_emnist
 from optimization.emnist_ae import centralized_emnist_ae
