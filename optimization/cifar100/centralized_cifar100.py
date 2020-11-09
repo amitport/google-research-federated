@@ -17,7 +17,7 @@ from typing import Any, Mapping, Optional
 
 import tensorflow as tf
 
-from federated_learning_research.pseudo_round import Compression
+from federated_learning_research.aggregators import Aggregation
 from utils import centralized_training_loop
 from utils.datasets import cifar100_dataset
 from utils.models import resnet_models
@@ -33,7 +33,7 @@ def run_centralized(optimizer: tf.keras.optimizers.Optimizer,
                     num_epochs: int,
                     batch_size: int,
                     pseudo_round_size: int,
-                    pseudo_round_compression: Compression,
+                    pseudo_round_compression: Aggregation,
                     decay_epochs: Optional[int] = None,
                     lr_decay: Optional[float] = None,
                     decay_type: str = 'linear',

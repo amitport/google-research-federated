@@ -21,7 +21,8 @@ import pandas as pd
 import tensorflow as tf
 
 from federated_learning_research import pseudo_round
-from federated_learning_research.pseudo_round import Compression, noop_mean
+from federated_learning_research.aggregators import Aggregation
+from federated_learning_research.pseudo_round import noop_mean
 from optimization.shared import keras_callbacks
 from utils import utils_impl
 
@@ -33,7 +34,7 @@ def run(
     root_output_dir: str,
     num_epochs: int,
     pseudo_round_size: int = None,
-    pseudo_round_compression: Compression = noop_mean,
+    pseudo_round_compression: Aggregation = noop_mean,
     hparams_dict: Optional[Dict[str, Any]] = None,
     decay_epochs: Optional[int] = None,
     lr_decay: Optional[float] = None,
