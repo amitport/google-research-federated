@@ -33,14 +33,14 @@ def run_centralized(optimizer: tf.keras.optimizers.Optimizer,
                     num_epochs: int,
                     batch_size: int,
                     pseudo_round_size: int,
-                    pseudo_round_compression: Aggregation,
+                    pseudo_round_aggregation: Aggregation,
                     decay_epochs: Optional[int] = None,
                     lr_decay: Optional[float] = None,
                     decay_type: str = 'linear',
                     hparams_dict: Optional[Mapping[str, Any]] = None,
                     crop_size: Optional[int] = 24,
                     max_batches: Optional[int] = None):
-  """Trains a ResNet-18 on CIFAR-100 using a given optimizer.
+    """Trains a ResNet-18 on CIFAR-100 using a given optimizer.
 
   Args:
     optimizer: A `tf.keras.optimizers.Optimizer` used to perform training.
@@ -52,7 +52,7 @@ def run_centralized(optimizer: tf.keras.optimizers.Optimizer,
     num_epochs: The number of training epochs.
     batch_size: The batch size, used for train, validation, and test.
     pseudo_round_size: TODO.
-    pseudo_round_compression: TODO.
+    pseudo_round_aggregation: TODO.
     decay_epochs: The number of epochs of training before decaying the learning
       rate. If None, no decay occurs.
     lr_decay: The amount to decay the learning rate by after `decay_epochs`
@@ -65,33 +65,33 @@ def run_centralized(optimizer: tf.keras.optimizers.Optimizer,
       that many batches. If set to None or a nonpositive integer, the full
       datasets are used.
   """
-  crop_shape = (crop_size, crop_size, NUM_CHANNELS)
+    crop_shape = (crop_size, crop_size, NUM_CHANNELS)
 
-  cifar_train, cifar_test = cifar100_dataset.get_centralized_datasets(
-      train_batch_size=batch_size,
-      max_train_batches=max_batches,
-      max_test_batches=max_batches,
-      crop_shape=crop_shape)
+    cifar_train, cifar_test = cifar100_dataset.get_centralized_datasets(
+        train_batch_size=batch_size,
+        max_train_batches=max_batches,
+        max_test_batches=max_batches,
+        crop_shape=crop_shape)
 
-  model = resnet_models.create_resnet18(
-      input_shape=crop_shape, num_classes=NUM_CLASSES, norm='batch')
-  model.compile(
-      loss=tf.keras.losses.SparseCategoricalCrossentropy(),
-      optimizer=optimizer,
-      metrics=[tf.keras.metrics.SparseCategoricalAccuracy()],
-      # run_eagerly=True,
-  )
+    model = resnet_models.create_resnet18(
+        input_shape=crop_shape, num_classes=NUM_CLASSES, norm='batch')
+    model.compile(
+        loss=tf.keras.losses.SparseCategoricalCrossentropy(),
+        optimizer=optimizer,
+        metrics=[tf.keras.metrics.SparseCategoricalAccuracy()],
+        # run_eagerly=True,
+    )
 
-  centralized_training_loop.run(
-      keras_model=model,
-      train_dataset=cifar_train,
-      validation_dataset=cifar_test,
-      experiment_name=experiment_name,
-      root_output_dir=root_output_dir,
-      num_epochs=num_epochs,
-      pseudo_round_size=pseudo_round_size,
-      pseudo_round_compression=pseudo_round_compression,
-      hparams_dict=hparams_dict,
-      decay_epochs=decay_epochs,
-      lr_decay=lr_decay,
-      decay_type=decay_type)
+    centralized_training_loop.run(
+        keras_model=model,
+        train_dataset=cifar_train,
+        validation_dataset=cifar_test,
+        experiment_name=experiment_name,
+        root_output_dir=root_output_dir,
+        num_epochs=num_epochs,
+        pseudo_round_size=pseudo_round_size,
+        pseudo_round_aggregation=pseudo_round_aggregation,
+        hparams_dict=hparams_dict,
+        decay_epochs=decay_epochs,
+        lr_decay=lr_decay,
+        decay_type=decay_type)
