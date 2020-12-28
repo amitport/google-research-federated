@@ -30,6 +30,8 @@ from typing import Callable, Optional, Union
 import attr
 import tensorflow as tf
 import tensorflow_federated as tff
+from tensorflow_model_optimization.python.core.internal.tensor_encoding.encoders import hadamard_quantization
+
 from utils import tensor_utils
 
 
@@ -140,6 +142,16 @@ def create_client_update_fn():
   with tf.function" errors due to the client optimizer creating variables. This
   is really only needed because we test the client_update function directly.
   """
+  enc = hadamard_quantization(1)
+
+  def encode_decode(x):
+    if 'normalization' not in x.name and x.shape.num_elements() > 10000:
+      encode_params, decode_params = enc.get_params(enc.initial_state())
+      encoded_tensors, state_update_tensors, input_shapes = enc.encode(x, encode_params)
+      return enc.decode(encoded_tensors, decode_params, input_shapes)
+    else:
+      return x
+
   @tf.function
   def client_update(model,
                     dataset,
@@ -175,7 +187,7 @@ def create_client_update_fn():
       num_examples += tf.shape(output.predictions)[0]
 
     aggregated_outputs = model.report_local_outputs()
-    weights_delta = tf.nest.map_structure(lambda a, b: a - b,
+    weights_delta = tf.nest.map_structure(lambda a, b: tf.subtract(a, b, name=f'delta/{b.name[:b.name.index(":")]}'),
                                           model_weights.trainable,
                                           initial_weights.trainable)
     weights_delta, has_non_finite_weight = (
@@ -183,10 +195,13 @@ def create_client_update_fn():
 
     if has_non_finite_weight > 0:
       client_weight = tf.constant(0, dtype=tf.float32)
-    elif client_weight_fn is None:
-      client_weight = tf.cast(num_examples, dtype=tf.float32)
     else:
-      client_weight = client_weight_fn(aggregated_outputs)
+      weights_delta = tf.nest.map_structure(encode_decode, weights_delta)
+
+      if client_weight_fn is None:
+        client_weight = tf.cast(num_examples, dtype=tf.float32)
+      else:
+        client_weight = client_weight_fn(aggregated_outputs)
 
     return ClientOutput(
         weights_delta, client_weight, aggregated_outputs,
