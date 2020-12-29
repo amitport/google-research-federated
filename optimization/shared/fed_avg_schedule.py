@@ -134,7 +134,7 @@ class ClientOutput(object):
   optimizer_output = attr.ib()
 
 
-def create_client_update_fn():
+def create_client_update_fn(encoder_key='identity'):
   """Returns a tf.function for the client_update.
 
   This "create" fn is necesessary to prevent
@@ -142,13 +142,22 @@ def create_client_update_fn():
   with tf.function" errors due to the client optimizer creating variables. This
   is really only needed because we test the client_update function directly.
   """
-  enc = hadamard_quantization(1)
 
-  def encode_decode(x):
-    if 'normalization' not in x.name and x.shape.num_elements() > 10000:
+  def from_tf_encoder(enc):
+    def enc_dec(x):
       encode_params, decode_params = enc.get_params(enc.initial_state())
       encoded_tensors, state_update_tensors, input_shapes = enc.encode(x, encode_params)
       return enc.decode(encoded_tensors, decode_params, input_shapes)
+    return enc_dec
+
+  if encoder_key == 'hadamard_quantization':
+    pseudo_encoder = from_tf_encoder(hadamard_quantization(1))
+  else: # encoder_key == 'identity'
+    pseudo_encoder = lambda x: x
+
+  def encode_decode(x):
+    if 'normalization' not in x.name and x.shape.num_elements() > 10000:
+      return pseudo_encoder(x)
     else:
       return x
 
@@ -248,6 +257,7 @@ def build_fed_avg_process(
     server_optimizer_fn: OptimizerBuilder = tf.keras.optimizers.SGD,
     server_lr: Union[float, LRScheduleFn] = 1.0,
     client_weight_fn: Optional[ClientWeightFn] = None,
+    encoder_key: str = 'identity',
 ) -> tff.templates.IterativeProcess:
   """Builds the TFF computations for optimization using federated averaging.
 
@@ -265,6 +275,7 @@ def build_fed_avg_process(
       `model.report_local_outputs` and returns a tensor that provides the weight
       in the federated average of model deltas. If not provided, the default is
       the total number of examples processed on device.
+    encoder_key: TODO
 
   Returns:
     A `tff.templates.IterativeProcess`.
@@ -295,7 +306,7 @@ def build_fed_avg_process(
   def client_update_fn(tf_dataset, initial_model_weights, round_num):
     client_lr = client_lr_schedule(round_num)
     client_optimizer = client_optimizer_fn(client_lr)
-    client_update = create_client_update_fn()
+    client_update = create_client_update_fn(encoder_key)
     return client_update(model_fn(), tf_dataset, initial_model_weights,
                          client_optimizer, client_weight_fn)
 

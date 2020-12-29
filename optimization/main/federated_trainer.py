@@ -77,6 +77,9 @@ with utils_impl.record_hparam_flags() as shared_flags:
       'rounds_per_profile', 0,
       '(Experimental) How often to run the experimental TF profiler, if >0.')
 
+flags.DEFINE_enum(
+    'encoder_key', 'identity', ['identity', 'hadamard_quantization'], 'TODO')
+
 with utils_impl.record_hparam_flags() as task_flags:
   # Task specification
   flags.DEFINE_enum('task', None, _SUPPORTED_TASKS,
@@ -229,7 +232,8 @@ def main(argv):
         client_lr=client_lr_schedule,
         server_optimizer_fn=server_optimizer_fn,
         server_lr=server_lr_schedule,
-        client_weight_fn=client_weight_fn)
+        client_weight_fn=client_weight_fn,
+        encoder_key=FLAGS.encoder_key)
 
   shared_args = utils_impl.lookup_flag_values(shared_flags)
   shared_args['iterative_process_builder'] = iterative_process_builder
