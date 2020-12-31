@@ -78,7 +78,7 @@ with utils_impl.record_hparam_flags() as shared_flags:
       '(Experimental) How often to run the experimental TF profiler, if >0.')
 
 flags.DEFINE_enum(
-    'encoder_key', 'identity', ['identity', 'hadamard_quantization'], 'TODO')
+    'encoder_key', 'identity', ['identity', 'hadamard_quantization', 'hadamard_com'], 'TODO')
 
 with utils_impl.record_hparam_flags() as task_flags:
   # Task specification
