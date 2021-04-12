@@ -98,13 +98,13 @@ class NormalizationStage(te.core.EncodingStageInterface):
     """See base class."""
     del encode_params
 
-    # normalized, norm = tf.linalg.normalize(x, ord=self.ord)
+    normalized, norm = tf.linalg.normalize(x, ord=self.ord)
     # print('origin: ', norm)
 
     return {
       # currently this is followed by sign so no point in normalizing
-      self.ENCODED_VALUES_KEY: tf.identity(x),
-      self.NORM_KEY: tf.norm(x, ord=self.ord)}
+      self.ENCODED_VALUES_KEY: normalized,
+      self.NORM_KEY: norm}
 
   def decode(self,
              encoded_tensors,
@@ -117,7 +117,8 @@ class NormalizationStage(te.core.EncodingStageInterface):
     # normalized, _ = tf.linalg.normalize(encoded_tensors[self.NORMALIZED_VALUES_KEY], ord=self.ord)
     # print(_)
     # return normalized * encoded_tensors[self.NORM_KEY]
-    return encoded_tensors[self.ENCODED_VALUES_KEY] * encoded_tensors[self.NORM_KEY]
+    normalized, _ = tf.linalg.normalize(encoded_tensors[self.ENCODED_VALUES_KEY], ord=self.ord)
+    return normalized * encoded_tensors[self.NORM_KEY]
     # return (encoded_tensors[self.ENCODED_VALUES_KEY] / tf.norm(encoded_tensors[self.ENCODED_VALUES_KEY])) *
     # encoded_tensors[self.NORM_KEY]
 
@@ -125,7 +126,7 @@ class NormalizationStage(te.core.EncodingStageInterface):
 def hadamard_com_encoder():
   encoder = te.core.EncoderComposer(BitpackingEncodingStage(1)).add_parent(
     HalfNormalCenterOfMassSign(), HalfNormalCenterOfMassSign.ENCODED_VALUES_KEY).add_parent(
-    HadamardEncodingStage(), HadamardEncodingStage.ENCODED_VALUES_KEY).add_parent(
+    HadamardEncodingStage(), HadamardEncodingStage.ENCODED_VALUES_KEY).add_parent(    
     NormalizationStage(), NormalizationStage.ENCODED_VALUES_KEY).add_parent(
     FlattenEncodingStage(), FlattenEncodingStage.ENCODED_VALUES_KEY)
 

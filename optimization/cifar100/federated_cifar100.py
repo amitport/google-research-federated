@@ -138,3 +138,19 @@ def run_federated(
       experiment_name=experiment_name,
       root_output_dir=root_output_dir,
       **kwargs)
+
+
+# model = resnet_models.create_resnet18(
+#   input_shape=(24, 24, 3),
+#   num_classes=100)
+# model.compile(
+#   loss=tf.keras.losses.SparseCategoricalCrossentropy(),
+#   optimizer=tf.keras.optimizers.SGD())
+#
+# weights = model.trainable_weights
+#
+#
+# @tf.function
+# def xx2():
+#   return [tf.subtract(w, w, name=f'delta/{w.name[:w.name.index(":")]}').name for w in weights]
+# xx2()
