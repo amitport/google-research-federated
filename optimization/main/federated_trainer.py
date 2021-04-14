@@ -82,6 +82,9 @@ with utils_impl.record_hparam_flags() as task_flags:
   flags.DEFINE_enum('task', None, _SUPPORTED_TASKS,
                     'Which task to perform federated training on.')
 
+  flags.DEFINE_enum('weight_preproc', 'passthrough', ['passthrough', 'ignore'],
+                    'What to do with the clients\' relative weights.')
+
 with utils_impl.record_hparam_flags() as cifar100_flags:
   # CIFAR-100 flags
   flags.DEFINE_integer('cifar100_crop_size', 24, 'The height and width of '
@@ -190,6 +193,10 @@ def main(argv):
         return tf.cast(tf.squeeze(local_outputs['num_tokens']), tf.float32)
     else:
       client_weight_fn = None
+
+    if FLAGS.weight_preproc == 'ignore':
+      def client_weight_fn(local_outputs):
+        return tf.constant(1.0, tf.float32)
 
     return fed_avg_schedule.build_fed_avg_process(
         model_fn=model_fn,
