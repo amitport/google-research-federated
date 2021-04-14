@@ -82,8 +82,9 @@ with utils_impl.record_hparam_flags() as task_flags:
   flags.DEFINE_enum('task', None, _SUPPORTED_TASKS,
                     'Which task to perform federated training on.')
 
-  flags.DEFINE_enum('weight_preproc', 'passthrough', ['passthrough', 'ignore'],
+  flags.DEFINE_enum('weight_preproc', 'passthrough', ['passthrough', 'ignore', 'truncate'],
                     'What to do with the clients\' relative weights.')
+  flags.DEFINE_float('weight_truncate_U', None, 'truncate threshold when weight_preproc is \'truncate\'')
 
 with utils_impl.record_hparam_flags() as cifar100_flags:
   # CIFAR-100 flags
@@ -197,6 +198,12 @@ def main(argv):
     if FLAGS.weight_preproc == 'ignore':
       def client_weight_fn(local_outputs):
         return tf.constant(1.0, tf.float32)
+    elif FLAGS.weight_preproc == 'truncate':
+      U = FLAGS.weight_truncate_U
+
+      def client_weight_fn(local_outputs):
+        client_weight = tf.cast(tf.squeeze(local_outputs['num_examples']), tf.float32)
+        return tf.where(tf.less(client_weight, U), client_weight, U)
 
     return fed_avg_schedule.build_fed_avg_process(
         model_fn=model_fn,
