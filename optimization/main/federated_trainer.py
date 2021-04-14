@@ -202,7 +202,8 @@ def main(argv):
       U = FLAGS.weight_truncate_U
 
       def client_weight_fn(local_outputs):
-        client_weight = tf.cast(tf.squeeze(local_outputs['num_examples']), tf.float32)
+        # TODO currently this only applies to shakespeare
+        client_weight = tf.cast(tf.squeeze(local_outputs['num_tokens']), tf.float32)
         return tf.where(tf.less(client_weight, U), client_weight, U)
 
     return fed_avg_schedule.build_fed_avg_process(
