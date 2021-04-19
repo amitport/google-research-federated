@@ -99,7 +99,8 @@ def model_builder():
 def _broadcast_encoder_fn(value):
   """Function for building encoded broadcast.
 
-  This method decides, based on the tensor size, whether to use lossy
+  This method decides, base
+  d on the tensor size, whether to use lossy
   compression or keep it as is (use identity encoder). The motivation for this
   pattern is due to the fact that compression of small model weights can provide
   only negligible benefit, while at the same time, lossy compression of small

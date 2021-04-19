@@ -144,7 +144,7 @@ def create_client_update_fn():
   """
   @tf.function
   def client_update(model,
-                    dataset,
+                    tf_dataset_with_byzflag,
                     initial_weights,
                     client_optimizer,
                     client_weight_fn=None):
@@ -169,7 +169,7 @@ def create_client_update_fn():
                           initial_weights)
 
     num_examples = tf.constant(0, dtype=tf.int32)
-    for batch in iter(dataset):
+    for batch in iter(tf_dataset_with_byzflag[0]):
       with tf.GradientTape() as tape:
         output = model.forward_pass(batch)
       grads = tape.gradient(output.loss, model_weights.trainable)
@@ -190,6 +190,15 @@ def create_client_update_fn():
       client_weight = tf.cast(num_examples, dtype=tf.float32)
     else:
       client_weight = client_weight_fn(aggregated_outputs)
+
+    if tf_dataset_with_byzflag[1]:
+      # do model to zero attack
+      # note we are doing this after learning to keep the metric valid
+      return ClientOutput(
+        weights_delta=initial_weights.trainable,
+        client_weight=tf.cast(10000, dtype=tf.float32), # todo truncation
+        model_output=model.report_local_outputs(),
+        optimizer_output=collections.OrderedDict([('num_examples', num_examples)]))
 
     return ClientOutput(
         weights_delta, client_weight, aggregated_outputs,
@@ -279,12 +288,12 @@ def build_fed_avg_process(
   tf_dataset_type = tff.SequenceType(dummy_model.input_spec)
   model_input_type = tff.SequenceType(dummy_model.input_spec)
 
-  @tff.tf_computation(model_input_type, model_weights_type, round_num_type)
-  def client_update_fn(tf_dataset, initial_model_weights, round_num):
+  @tff.tf_computation((model_input_type, tf.bool), model_weights_type, round_num_type)
+  def client_update_fn(tf_dataset_with_byzflag, initial_model_weights, round_num):
     client_lr = client_lr_schedule(round_num)
     client_optimizer = client_optimizer_fn(client_lr)
     client_update = create_client_update_fn()
-    return client_update(model_fn(), tf_dataset, initial_model_weights,
+    return client_update(model_fn(), tf_dataset_with_byzflag, initial_model_weights,
                          client_optimizer, client_weight_fn)
 
   @tff.tf_computation(server_state_type, model_weights_type.trainable)
@@ -299,7 +308,7 @@ def build_fed_avg_process(
 
   @tff.federated_computation(
       tff.type_at_server(server_state_type),
-      tff.type_at_clients(tf_dataset_type))
+      tff.type_at_clients(tff.to_type((tf_dataset_type, tf.bool))))
   def run_one_round(server_state, federated_dataset):
     """Orchestration logic for one round of computation.
 
