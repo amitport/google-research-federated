@@ -21,20 +21,22 @@ class DriveUtilsTest(tf.test.TestCase, parameterized.TestCase):
       rvec = tf.zeros_like(input)
 
       for client in range(n_clients):
-        rot_x = compression_utils.randomized_hadamard_transform(input, seed_pair=[SEED_PAIR[0] + trial,
-                                                                                  SEED_PAIR[1] + n_clients],
+        rot_x = compression_utils.randomized_hadamard_transform(tf.identity(input),
+                                                                seed_pair=[SEED_PAIR[0] + client + trial,
+                                                                           SEED_PAIR[1] + client],
                                                                 repeat=1)
         x, scale = drive_quantization(rot_x, bits=bits)
         x = inverse_drive_quantization(x, scale, bits=bits)
         x = compression_utils.inverse_randomized_hadamard_transform(x, original_dim=dim,
-                                                                    seed_pair=[SEED_PAIR[0] + trial,
-                                                                               SEED_PAIR[1] + n_clients])
+                                                                    seed_pair=[SEED_PAIR[0] + client + trial,
+                                                                               SEED_PAIR[1] + client])
 
         rvec += x
 
       rvec /= n_clients
 
       NMSE += tf.reduce_sum((input - rvec) ** 2) / tf.reduce_sum(input ** 2)
-      print(f'NMSE={NMSE}')
+      print(f'NMSE={tf.reduce_sum((input - rvec) ** 2) / tf.reduce_sum(input ** 2)}')
 
-    self.assertAllClose(NMSE / n_trials, 0.)
+    print(f'Average NMSE={NMSE / n_trials}')
+    self.assertLessEqual(NMSE / n_trials, 0.001)
