@@ -94,7 +94,7 @@ def drive_quantization(x, bits):
   # assign quantization levels
   d = tf.cast(tf.size(x), x.dtype)
   ss = tf.reduce_sum(x ** 2)
-  l2 = tf.sqrt(x)
+  l2 = tf.sqrt(ss)
 
   assignments = math_ops.bucketize(x * (d ** 0.5) / l2, boundaries)
 
@@ -105,17 +105,7 @@ def drive_quantization(x, bits):
   return assignments, scale
 
 
-def inverse_scaled_quantization(assignments, scale, bits):
-  centroids = all_centroids[bits]
-
-  unscaled_centers_vec = tf.gather(centroids, assignments)
-
-  # restore scale
-  return scale * unscaled_centers_vec
-
-
-
-def inverse_scaled_quantization(assignments, scale, bits):
+def inverse_drive_quantization(assignments, scale, bits):
   centroids = all_centroids[bits]
 
   unscaled_centers_vec = tf.gather(centroids, assignments)
