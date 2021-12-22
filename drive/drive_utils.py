@@ -1,11 +1,14 @@
 import tensorflow as tf
 from tensorflow.python.ops import math_ops
 
+from distributed_dp import compression_utils
+
 ##############################################################################
 ##############################################################################
 
 
 ### half-normal centroids
+
 half_centroids = {1: [0.7978845608028654],
                   2: [0.4527800398860679, 1.5104176087114887],
                   3: [0.24509416307340598, 0.7560052489539643, 1.3439092613750225, 2.151945669890335],
@@ -112,3 +115,31 @@ def inverse_drive_quantization(assignments, scale, bits):
 
   # restore scale
   return scale * unscaled_centers_vec
+
+
+def simulate_drive(input_record,
+                   sample_hadamard_seed: tf.Tensor,
+                   bits=4,
+                   hadamard_repeats=1):
+  """Applies compression to the record as a single concatenated vector."""
+  input_vec = compression_utils.flatten_concat(input_record)
+
+  casted_record = tf.cast(input_vec, tf.float32)
+
+  rotated_record = compression_utils.randomized_hadamard_transform(
+    casted_record, seed_pair=sample_hadamard_seed, repeat=hadamard_repeats)
+
+  quantized_record, scale = drive_quantization(rotated_record, bits=bits)
+  dequantized_record = inverse_drive_quantization(quantized_record, scale, bits=bits)
+
+  unrotated_record = compression_utils.inverse_randomized_hadamard_transform(dequantized_record,
+                                                                             original_dim=tf.size(input_vec),
+                                                                             seed_pair=sample_hadamard_seed,
+                                                                             repeat=hadamard_repeats)
+  if input_record.dtype.is_integer:
+    uncasted_record = tf.cast(tf.round(unrotated_record), input_record.dtype)
+  else:
+    uncasted_record = tf.cast(unrotated_record, input_record.dtype)
+
+  reconstructed_record = compression_utils.inverse_flatten_concat(uncasted_record, input_record)
+  return reconstructed_record
