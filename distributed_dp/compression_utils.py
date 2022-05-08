@@ -16,6 +16,8 @@
 import numpy as np
 import tensorflow as tf
 
+from distributed_dp.delta_product import scale_for_dp
+
 DEFAULT_BETA = np.exp(-0.5)
 
 
@@ -98,9 +100,15 @@ def scaled_quantization(x,
   return quantized_x
 
 
-def inverse_scaled_quantization(x, scale):
-  """Restores the value range of `x` from `scaled_quantization`."""
-  return x / tf.cast(scale, x.dtype)
+def inverse_scaled_quantization(x, scale, l2_norm_bound):
+  scale = tf.cast(scale, x.dtype)
+  dim = tf.cast(tf.size(x), x.dtype)
+  l2_norm_bound = tf.cast(l2_norm_bound, x.dtype)
+  scaled_bound = l2_norm_bound# * scale
+  std = tf.math.divide_no_nan(scaled_bound, tf.sqrt(dim))
+  return x * scale_for_dp(scale, std, prec=1e-5)
+  # """Restores the value range of `x` from `scaled_quantization`."""
+  # return x / tf.cast(scale, x.dtype)
 
 
 def flatten_concat(structure):

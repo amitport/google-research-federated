@@ -94,11 +94,11 @@ class DistributedDiscreteGaussianSumQuery(tfp.SumAggregationDPQuery):
     record_as_float_list = [tf.cast(x, tf.float32) for x in record_as_list]
     tf.nest.map_structure(lambda x: tf.compat.v1.assert_type(x, tf.int32),
                           record_as_list)
-    dependencies = [
-        tf.compat.v1.assert_less_equal(
+    x = tf.greater(
             tf.linalg.global_norm(record_as_float_list),
-            params.l2_norm_bound,
-            message=f'Global L2 norm exceeds {params.l2_norm_bound}.')
+            params.l2_norm_bound)
+    dependencies = [
+        tf.cond(x, (lambda: tf.print(f'{tf.linalg.global_norm(record_as_float_list)} Global L2 norm exceeds {params.l2_norm_bound}.')), (lambda: None))
     ]
     with tf.control_dependencies(dependencies):
       result = tf.cond(

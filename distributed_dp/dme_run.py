@@ -33,8 +33,8 @@ flags.DEFINE_boolean('print_output', False, 'Whether to print the outputs.')
 flags.DEFINE_integer(
     'run_id', 1, 'ID of the run, useful for identifying '
     'the run when parallelizing this script.')
-flags.DEFINE_integer('repeat', 5, 'Number of times to repeat (sequentially).')
-flags.DEFINE_string('output_dir', '/tmp/ddp_dme_outputs', 'Output directory.')
+flags.DEFINE_integer('repeat', 1, 'Number of times to repeat (sequentially).')
+flags.DEFINE_string('output_dir', '/cs_storage/amitport/temp/ddp_dme_outputs', 'Output directory.')
 flags.DEFINE_string('tag', '', 'Extra subfolder for the output result files.')
 flags.DEFINE_enum('mechanism', 'ddgauss', ['ddgauss'], 'DDP mechanism to use.')
 flags.DEFINE_float('norm', 10.0, 'Norm of the randomly generated vectors.')
@@ -104,6 +104,7 @@ def experiment(bits,
   # 2. Distributed DP: try each `b` separately.
   ddp_mse_list_per_bit = []
   for bit in bits:
+    print(f'{bit=}')
     discrete_mse_list = []
     for eps in epsilons:
       if mechanism == 'ddgauss':
@@ -166,7 +167,8 @@ def experiment_repeated(bits,
         f'{beta:.3f}, eps={epsilons}, k={k_stddevs}, sng={sqrtn_norm_growth}')
 
   repeat_results = []
-  for client_data in client_data_list:
+  for rr, client_data in enumerate(client_data_list):
+    print(f'repeat={rr}')
     repeat_results.append(
         experiment(
             bits=bits,
@@ -217,11 +219,11 @@ def main(_):
   repeat = FLAGS.repeat
 
   # Parallel subplots for different n=num_clients and d=dimension.
-  nd_zip = [(100, 250), (1000, 250)]
+  nd_zip = [(20, 2**20)]#, (1000, 250)]
   # nd_zip = [(10000, 2000)]
 
   # Curves within a subplot.
-  bits = [10, 12, 14, 16]
+  bits = [14]#[12]#[14, 16]#[10, 12, 14, 16]
   # bits = [14, 16, 18, 20]
 
   # X-axis: epsilons.
@@ -236,7 +238,7 @@ def main(_):
         for _ in range(repeat)
     ]
     beta = np.exp(-0.5)
-
+    print(f'run {j}')
     # Run experiment with repetition.
     rep_gauss_mse_list, rep_ddp_mse_list_per_bit = experiment_repeated(
         bits,
@@ -268,6 +270,7 @@ def main(_):
       subplot.set(xlabel='Epsilon', ylabel='MSE')
       subplot.set_title(f'(n={n}, d={d}, k={k_stddevs})')
       subplot.set_yscale('log' if use_log else 'linear')
+      subplot.set_ylim((10**-1, 10**2))
       subplot.legend()
 
     result_dic = {

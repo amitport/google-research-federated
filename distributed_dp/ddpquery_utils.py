@@ -36,7 +36,7 @@ def build_ddp_query(mechanism, local_stddev, l2_norm_bound, beta, padded_dim,
   """Construct a DDP query object wrapped with quantization operations."""
   beta = beta or 0
   conditional = beta > 0
-  logging.info('Conditional rounding set to %s (beta = %f)', conditional, beta)
+  # logging.info('Conditional rounding set to %s (beta = %f)', conditional, beta)
 
   # Add some post-rounding norm leeway to peacefully allow for precision issues.
   scaled_rounded_l2 = accounting_utils.rounded_l2_norm_bound(
@@ -51,7 +51,7 @@ def build_ddp_query(mechanism, local_stddev, l2_norm_bound, beta, padded_dim,
 
   # Wrap DDP query with quantization operations.
   quantization_params = compression_query.QuantizationParams(
-      stochastic=True,
+      stochastic=False,
       conditional=conditional,
       l2_norm_bound=l2_norm_bound,
       beta=beta,

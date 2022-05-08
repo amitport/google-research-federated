@@ -200,7 +200,7 @@ class CompressionSumQuery(tfp.SumAggregationDPQuery):
     # Revert to float32 for decoding operations.
     dequantized_record = tf.cast(agg_record, tf.float32)
     dequantized_record = compression_utils.inverse_scaled_quantization(
-        dequantized_record, quantization_params.quantize_scale)
+        dequantized_record, quantization_params.quantize_scale, quantization_params.l2_norm_bound)
 
     template_as_vector = compression_utils.flatten_concat(record_template)
     unrotated_record = compression_utils.inverse_randomized_hadamard_transform(
