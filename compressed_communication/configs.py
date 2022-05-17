@@ -20,7 +20,7 @@ import numpy as np
 AGGREGATORS = [
     'quantize_entropy_code', 'vote_step_size', 'entropy_cross_entropy', 'drive',
     'one_bit_sgd', 'qsgd', 'terngrad', 'three_lc', 'top_k', 'no_compression',
-    'rotation_ablation', 'histogram'
+    'rotation_ablation', 'histogram', 'hadamard_sq', 'eden', 'quic_fl',
 ]
 
 ROUNDING_TYPES = ['uniform', 'stochastic', 'dithered']
