@@ -3,15 +3,18 @@ import pickle
 import numpy as np
 import tensorflow as tf
 import tensorflow_federated as tff
+from pathlib import Path
+
+script_folder = Path(__file__).parent
 
 from distributed_dp import compression_utils
 
 
-# sender_table_X = {int(k): v for k, v in np.load('sender_table_X.npz').items()}
-# sender_table_p = {int(k): v for k, v in np.load('sender_table_p.npz').items()}
-# recv_table = {int(k): v for k, v in np.load('recv_table.npz').items()}
+# sender_table_X = {int(k): v for k, v in np.load(script_folder / 'sender_table_X.npz').items()}
+# sender_table_p = {int(k): v for k, v in np.load(script_folder / 'sender_table_p.npz').items()}
+# recv_table = {int(k): v for k, v in np.load(script_folder / 'recv_table.npz').items()}
 #
-# with open('data.pickle', 'rb') as f:
+# with open(script_folder / 'data.pickle', 'rb') as f:
 #     data = pickle.load(f)
 #
 # BITS = 2
@@ -67,6 +70,10 @@ def quic_fl_roundtrip(input_record,
                       recv_table,
                       half_table_size,
                       delta, T, h_len, x_len):
+    sender_table_X = tf.convert_to_tensor(sender_table_X, tf.int32)
+    sender_table_p = tf.convert_to_tensor(sender_table_p, tf.float32)
+    recv_table = tf.convert_to_tensor(recv_table, tf.float32)
+
     """Applies compression to the record as a single concatenated vector."""
     input_vec = compression_utils.flatten_concat(input_record)
 
@@ -83,7 +90,7 @@ def quic_fl_roundtrip(input_record,
 
     exact_mask = tf.logical_or(x < -T, T < x)
     exact_vals = x[exact_mask]
-    quant_vals = tf.where(exact_mask, 0, x / delta)
+    quant_vals = tf.where(exact_mask, tf.cast(0, x.dtype), x / delta)
 
     # stochastic rounding
     quant_vals = tf.cast(
@@ -124,16 +131,16 @@ def quic_fl_roundtrip(input_record,
 
 
 def _create_quic_fl_fn(value_type, bits):
-    sender_table_X = {int(k): v for k, v in np.load('sender_table_X.npz').items()}
-    sender_table_p = {int(k): v for k, v in np.load('sender_table_p.npz').items()}
-    recv_table = {int(k): v for k, v in np.load('recv_table.npz').items()}
+    sender_table_X = {int(k): v for k, v in np.load(script_folder / 'sender_table_X.npz').items()}
+    sender_table_p = {int(k): v for k, v in np.load(script_folder / 'sender_table_p.npz').items()}
+    recv_table = {int(k): v for k, v in np.load(script_folder / 'recv_table.npz').items()}
 
-    with open('data.pickle', 'rb') as f:
+    with open(script_folder / 'data.pickle', 'rb') as f:
         data = pickle.load(f)
 
-    sender_table_X = tf.cast(sender_table_X[bits], tf.int32)
-    sender_table_p = tf.cast(sender_table_p[bits], tf.float32)
-    recv_table = tf.cast(recv_table[bits], tf.float32)
+    sender_table_X = sender_table_X[bits]
+    sender_table_p = sender_table_p[bits]
+    recv_table = recv_table[bits]
     data = data[bits]
 
     # delta, T, h_len, x_len = data['delta'], data['T'], data['h_len'], data['x_len']
@@ -169,7 +176,7 @@ class QuicFLFactory(tff.aggregators.UnweightedAggregationFactory):
             raise ValueError("Expect value_type to be a float tensor, "
                              f"found {value_type}.")
 
-        quic_fl_fn = _create_quic_fl_fn(value_type, self._bits, p=1)
+        quic_fl_fn = _create_quic_fl_fn(value_type, self._bits)
 
         @tff.federated_computation()
         def init_fn():
